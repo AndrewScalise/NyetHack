@@ -1,12 +1,14 @@
+import kotlin.random.Random
+
 fun main(args: Array<String>) {
     val name = "Madrigal"
-    var healthPoints = 89
-    val isBlessed = true
-    val isImmortal = false
+    var healthPoints = Random.nextInt(0,100)
+    val isBlessed = Random.nextBoolean()
+    val isImmortal = Random.nextBoolean()
 
     // Aura
     val auraVisible = isBlessed && healthPoints > 50 || isImmortal
-    val auraColor = if (auraVisible) "GREEN" else "NONE"
+    val karma = (Math.pow(Math.random(), (110 - healthPoints) / 100.0) * 20).toInt()
 
     val healthStatus = when (healthPoints) {
         100 -> "is in excellent condition!"
@@ -20,8 +22,17 @@ fun main(args: Array<String>) {
         else -> "is in awful condition!"
     }
 
+    val auraColor = when (karma) {
+        in 0..5 -> "red"
+        in 6..10 -> "orange"
+        in 11..15 -> "purple"
+        in 16..20 -> "green"
+        else -> "no aura"
+    }
+
     //player status
-    println("(Aura: $auraColor) " +
+    println(
+        (if (auraVisible) "(Aura: $auraColor) " else "") +
             "(Blessed: ${if (isBlessed) "YES" else "NO"})")
     println("$name $healthStatus")
 }
