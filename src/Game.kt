@@ -1,8 +1,12 @@
+import kotlin.random.Random
+
 fun main(args: Array<String>) {
     val name = "Madrigal"
     var healthPoints = 89
     val isBlessed = true
     val isImmortal = false
+    var inebriation = 1
+    val numFireballs: Int = Random.nextInt(1, 50)
 
     // Aura
     val auraVisible = isBlessed && healthPoints > 50 || isImmortal
@@ -10,10 +14,16 @@ fun main(args: Array<String>) {
 
     val healthStatus = formatHealthStatus(healthPoints, isBlessed)
 
+    inebriation *= numFireballs
+    castFireball(numFireballs)
+    performCombat()
+    performCombat("Ulv")
+    performCombat("Sabrina", true)
+
     //player status
     printPlayerStatus(auraColor, isBlessed, name, healthStatus)
+    println("Inebriation Level: ${determineInebriationLevel(inebriation)}")
 
-    castFireball()
 }
 
 private fun printPlayerStatus(
@@ -29,9 +39,7 @@ private fun printPlayerStatus(
     println("$name $healthStatus")
 }
 
-private fun auraColor(auraVisible: Boolean): String {
-    return if (auraVisible) "GREEN" else "NONE"
-}
+private fun auraColor(auraVisible: Boolean): String = if (auraVisible) "GREEN" else "NONE"
 
 private fun formatHealthStatus(healthPoints: Int, isBlessed: Boolean): String {
     return when (healthPoints) {
@@ -47,5 +55,34 @@ private fun formatHealthStatus(healthPoints: Int, isBlessed: Boolean): String {
     }
 }
 
-private fun castFireball(numFireballs: Int = 2) =
-    println("A glass of Fireball spring into existence. (x$numFireballs)")
+private fun determineInebriationLevel(inebriation: Int): String {
+    return when (inebriation) {
+        in 1..10 -> "tipsy"
+        in 11..20 -> "sloshed"
+        in 21..30 -> "soused"
+        in 31..40 -> "stewed"
+        in 41..50 -> "..toaSt3d"
+        else -> "I'm not drunk"
+    }
+}
+
+private fun castFireball(numFireballs: Int) {
+    println("A glass of Fireball springs into existence. (x$numFireballs)")
+}
+
+fun performCombat() {
+    println("You see nothing to fight!")
+}
+fun performCombat(enemyName: String) {
+    println("You begin fighting $enemyName")
+}
+
+fun performCombat(enemyName: String, isBlessed: Boolean) {
+    if (isBlessed) {
+        println("You begin fighting $enemyName. You are blessed with 2X damage!")
+    } else {
+        println("You begin fighting $enemyName.")
+    }
+}
+
+
